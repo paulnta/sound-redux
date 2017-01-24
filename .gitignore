@@ -5,3 +5,4 @@ server/config
 server/public/css
 server/public/js
 npm-debug.log
+.idea/
