@@ -55,14 +55,32 @@ export function playSong(playlist, songIndex) {
   return (dispatch, getState) => {
     dispatch(changeCurrentTime(0));
 
-    const { player } = getState();
+    const { player, playlists, entities, authed } = getState();
     const { selectedPlaylists } = player;
     const len = selectedPlaylists.length;
     if (len === 0 || selectedPlaylists[len - 1] !== playlist) {
       dispatch(changeSelectedPlaylists(selectedPlaylists, playlist));
     }
-
     dispatch(changePlayingSong(songIndex));
+
+    const songId = playlists[playlist].items[songIndex]
+    const song = entities.songs[songId]
+    const url = `/api/events`
+    const body = {
+      user: authed.user.id,
+      type: 'PLAY_SONG',
+      payload: {
+        ...song
+      }
+    }
+    console.log(`will post to ${url} with body`, body)
+
+    fetch(url, {
+      method: 'post',
+      body,
+    })
+      .then(response => response.json())
+      .then(json => console.log('response post event', json))
   };
 }
 
