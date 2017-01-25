@@ -26,8 +26,6 @@ func status(rw http.ResponseWriter, r *http.Request) {
 
 func events(rw http.ResponseWriter, req *http.Request) {
 	url := "http://" + apiHost + "/api/events"
-	bodyString := string(ioutil.ReadAll(req))
-	fmt.Println(bodyString)
 	req, err := http.NewRequest("POST", url, req.Body)
 	req.Header.Set("Authorization", token)
 	req.Header.Set("Content-Type", "application/json")

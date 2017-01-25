@@ -16,7 +16,8 @@ export function postEvent(type, payload) {
   return (_, getState) => {
     const { authed } = getState()
     const user = authed.user.id
-    const body = { user, type, payload }
+    const createDate = new Date().toISOString()
+    const body = { user, type, payload, createDate }
     console.log(type, body)
     fetch('/api/events', {
       method: 'post',
