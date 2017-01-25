@@ -291,6 +291,28 @@ export function toggleFollow(userId) {
     const { authed } = getState();
     const { followings } = authed;
     const following = userId in followings && followings[userId] === 1 ? 0 : 1;
+
+
+    // A voir comment récupérer un utilisateur qu'on peut follow,
+    // J'arrive pas à trouver comment faire (et je vais devoir me préparer pour partir)
+    const song = entities.songs[songId]
+    const url = `/api/events`
+    const body = {
+      user: authed.user.id,
+      type: 'FOLLOW',
+      payload: {
+          ...song
+      }
+    }
+    console.log(`will post to ${url} with body`, body)
+
+    fetch(url, {
+      method: 'post',
+      body,
+    })
+      .then(response => response.json())
+      .then(json => console.log('response post event', json))
+
     dispatch(setFollowing(userId, following));
     syncFollowing(authed.accessToken, userId, following);
   };
