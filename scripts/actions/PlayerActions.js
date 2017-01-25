@@ -61,26 +61,33 @@ export function playSong(playlist, songIndex) {
     if (len === 0 || selectedPlaylists[len - 1] !== playlist) {
       dispatch(changeSelectedPlaylists(selectedPlaylists, playlist));
     }
-    dispatch(changePlayingSong(songIndex));
 
+    dispatch(changePlayingSong(songIndex));
     const songId = playlists[playlist].items[songIndex]
-    const song = entities.songs[songId]
+    const { genre, title, user_id } = entities.songs[songId]
+    const { username: artist } = entities.users[user_id]
     const url = `/api/events`
     const body = {
       user: authed.user.id,
       type: 'PLAY_SONG',
       payload: {
-        ...song
+        title,
+        genre,
+        playlist,
+        artist: artist,
       }
     }
     console.log(`will post to ${url} with body`, body)
-
     fetch(url, {
       method: 'post',
-      body,
+      body: JSON.stringify(body),
     })
-      .then(response => response.json())
-      .then(json => console.log('response post event', json))
+      .then(response => {
+        if (response.ok) { console.log('event posted') }
+        else {
+          console.log('couldn\'t post event')
+        }
+      })
   };
 }
 
