@@ -8,6 +8,7 @@ import * as types from '../constants/ActionTypes';
 import { CLIENT_ID } from '../constants/Config';
 import { AUTHED_PLAYLIST_SUFFIX } from '../constants/PlaylistConstants';
 import { playlistSchema, songSchema, userSchema } from '../constants/Schemas';
+import { postEvent, EventTypes } from './GamifyActions'
 
 const COOKIE_PATH = 'accessToken';
 let streamInterval;
@@ -288,31 +289,17 @@ function syncLike(accessToken, songId, liked) {
 
 export function toggleFollow(userId) {
   return (dispatch, getState) => {
-    const { authed } = getState();
+    const { authed, entities: { users } } = getState();
     const { followings } = authed;
     const following = userId in followings && followings[userId] === 1 ? 0 : 1;
 
 
     // A voir comment récupérer un utilisateur qu'on peut follow,
     // J'arrive pas à trouver comment faire (et je vais devoir me préparer pour partir)
-    const song = entities.songs[songId]
-    const url = `/api/events`
-    const body = {
-      user: authed.user.id,
-      type: 'FOLLOW',
-      payload: {
-          ...song
-      }
+    if (following) {
+      const { id, username, followers_count } = users[userId]
+      dispatch(postEvent(EventTypes.START_FOLLOW_USER, { user_id: id, username, followers_count }))
     }
-    console.log(`will post to ${url} with body`, body)
-
-    fetch(url, {
-      method: 'post',
-      body,
-    })
-      .then(response => response.json())
-      .then(json => console.log('response post event', json))
-
     dispatch(setFollowing(userId, following));
     syncFollowing(authed.accessToken, userId, following);
   };

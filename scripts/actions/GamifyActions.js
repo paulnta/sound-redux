@@ -8,20 +8,19 @@
  */
 
 export const EventTypes = {
-  START_PLAY_SONG: 'START_PLAY_SONG'
+  START_PLAY_SONG: 'START_PLAY_SONG',
+  START_FOLLOW_USER: 'START_FOLLOW_USER'
 }
 
 export function postEvent(type, payload) {
   return (_, getState) => {
     const { authed } = getState()
     const user = authed.user.id
+    const body = { user, type, payload }
+    console.log(type, body)
     fetch('/api/events', {
       method: 'post',
-      body: JSON.stringify({
-        user,
-        type,
-        payload
-      }),
+      body: JSON.stringify(body),
     })
       .then(response => {
         if (response.ok) { console.log('event posted') }
