@@ -6,6 +6,7 @@ import modal from '../reducers/modal';
 import navigator from '../reducers/navigator';
 import player from '../reducers/player';
 import playlists from '../reducers/playlists';
+import profile from '../reducers/profile';
 
 const rootReducer = combineReducers({
   authed,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   modal,
   navigator,
   player,
+  profile,
   playlists,
 });
 

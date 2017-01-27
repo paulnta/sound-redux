@@ -12,6 +12,7 @@ import PlayerContainer from '../containers/PlayerContainer';
 import SongContainer from '../containers/SongContainer';
 import SongsContainer from '../containers/SongsContainer';
 import UserContainer from '../containers/UserContainer';
+import Profile from '../components/Profile'
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
@@ -45,6 +46,8 @@ class App extends Component {
         return <UserContainer />;
       case 'me':
         return <MeContainer />;
+      case 'profile':
+        return <Profile/>
       default:
         return null;
     }

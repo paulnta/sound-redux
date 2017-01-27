@@ -9,6 +9,7 @@ import { CLIENT_ID } from '../constants/Config';
 import { AUTHED_PLAYLIST_SUFFIX } from '../constants/PlaylistConstants';
 import { playlistSchema, songSchema, userSchema } from '../constants/Schemas';
 import { postEvent, EventTypes } from './GamifyActions'
+import { fetchBadges, fetchScalePoints } from './ProfileActions'
 
 const COOKIE_PATH = 'accessToken';
 let streamInterval;
@@ -205,6 +206,8 @@ function receiveAuthedUserPre(accessToken, user, shouldShowStream) {
     dispatch(fetchPlaylists(accessToken));
     dispatch(fetchStream(accessToken));
     dispatch(fetchFollowings(accessToken));
+    dispatch(fetchBadges())
+    dispatch(fetchScalePoints())
     if (shouldShowStream) {
       dispatch(navigateTo({ path: ['me', 'stream'] }));
     }
@@ -307,6 +310,7 @@ export function toggleFollow(userId) {
 
 export function toggleLike(songId) {
   return (dispatch, getState) => {
+    console.log('toggle like')
     const { authed, player, entities } = getState();
     const { likes } = authed;
     const { selectedPlaylists, currentSongIndex } = player;
@@ -319,26 +323,19 @@ export function toggleLike(songId) {
       }
     }
 
-    const song = entities.songs[songId]
-    const url = `/api/events`
-    const body = {
-      user: authed.user.id,
-      type: 'LIKE_SONG',
-      payload: {
-          ...song
-      }
-    }
-    console.log(`will post to ${url} with body`, body)
-
-    fetch(url, {
-      method: 'post',
-      body,
-    })
-      .then(response => response.json())
-      .then(json => console.log('response post event', json))
-
     dispatch(setLike(songId, liked));
     syncLike(authed.accessToken, songId, liked);
+
+    const eventType = liked ? EventTypes.LIKE_SONG : EventTypes.UNLIKE_SONG
+    const song = entities.songs[songId]
+    const { genre, title, user_id } = entities.songs[songId]
+    const { username: artist } = entities.users[user_id]
+    dispatch(postEvent(eventType, {
+      genre,
+      title,
+      artist,
+      selectedPlaylists,
+    }))
   };
 }
 

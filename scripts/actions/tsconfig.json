@@ -1,0 +1,166 @@
+[
+  //-------------------------------------- BADGE GENRE -----------------------------------
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "FAN-{{event.payload.genre}}",
+      "condition": "{{scalePoints[event.payload.genre]}} > 5"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "BIG-FAN-{{event.payload.genre}}",
+      "condition": "{{scalePoints[event.payload.genre]}} > 15"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "ADDICT-{{event.payload.genre}}",
+      "condition": "{{scalePoints[event.payload.genre]}} > 30"
+    }
+  },
+
+  //-------------------------------------- BADGE ARTIST -----------------------------------
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "FAN-{{event.payload.artist}}",
+      "condition": "{{scalePoints[event.payload.artist]}} > 5"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "BIG-FAN-{{event.payload.artist}}",
+      "condition": "{{scalePoints[event.payload.artist]}} > 15"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "ADDICT-{{event.payload.artist}}",
+      "condition": "{{scalePoints[event.payload.artist]}} > 30"
+    }
+  },
+
+  //-------------------------------------- BADGE PLAYLIST -----------------------------------
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "FAN-{{event.payload.playlist}}",
+      "condition": "{{scalePoints[event.payload.playlist]}} > 5"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "BIG-FAN-{{event.payload.playlist}}",
+      "condition": "{{scalePoints[event.payload.playlist]}} > 15"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "AWARD",
+      "badge": "ADDICT-{{event.payload.playlist}}",
+      "condition": "{{scalePoints[event.payload.playlist]}} > 30"
+    }
+  },
+
+  //-------------------------------------- SCALE_POINT LISTEN SONG -----------------------------------
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.genre}}",
+      "points": "+1"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.artist}}",
+      "points": "+1"
+    }
+  },
+  {
+    "eventType": "START_LISTEN_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.playlist}}",
+      "points": "+1"
+    }
+  },
+  //-------------------------------------- SCALE_POINT LIKE -----------------------------------
+  {
+    "eventType": "LIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.genre}}",
+      "points": "+10"
+    }
+  },
+  {
+    "eventType": "LIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.artist}}",
+      "points": "+10"
+    }
+  },
+  {
+    "eventType": "LIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.playlist}}",
+      "points": "+10"
+    }
+  },
+
+  //-------------------------------------- SCALE_POINT UNLIKE -----------------------------------
+  {
+    "eventType": "UNLIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.genre}}",
+      "points": "-10"
+    }
+  },
+  {
+    "eventType": "UNLIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.artist}}",
+      "points": "-10"
+    }
+  },
+  {
+    "eventType": "UNLIKE_SONG",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.playlist}}",
+      "points": "-10"
+    }
+  },
+
+  {
+    "eventType": "START_FOLLOW_USER",
+    "action": {
+      "type": "UPDATE_SCALEPOINT",
+      "scalePoint": "{{event.payload.artist}}",
+      "points": "+20"
+    }
+  },
+
+]

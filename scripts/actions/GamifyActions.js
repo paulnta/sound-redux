@@ -8,10 +8,46 @@
  */
 
 export const EventTypes = {
-  START_PLAY_SONG: 'START_PLAY_SONG',
-  START_FOLLOW_USER: 'START_FOLLOW_USER'
+  /**
+   * When the user clicks on Play button
+   * The event must provide a payload with fields:
+   *  - artist
+   *  - playlist
+   *  - genre
+   */
+  START_LISTEN_SONG: 'START_LISTEN_SONG',
+
+  /**
+   * When the user clicks on the Follow button.
+   * The event must provide a payload with fields:
+   *  - artist
+   */
+  START_FOLLOW_USER: 'START_FOLLOW_USER',
+
+  /**
+   * When the user clicks on a song's Like button
+   * The event must provide a payload with fields:
+   *  - artist
+   *  - genre
+   */
+  LIKE_SONG: 'LIKE_SONG',
+
+  /**
+   * When the user toggles a songs Like button (false)
+   * The event must provide a payload with fields:
+   *  - artist
+   *  - genre
+   */
+  UNLIKE_SONG: 'UNLIKE_SONG'
 }
 
+
+/**
+ * Post an event to Gamify
+ * @param type
+ * @param payload
+ * @return {function(*, *)}
+ */
 export function postEvent(type, payload) {
   return (_, getState) => {
     const { authed } = getState()

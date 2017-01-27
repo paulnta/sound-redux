@@ -43,6 +43,44 @@ func events(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(rw, string(body))
 }
 
+func scalePointList(rw http.ResponseWriter, req *http.Request)  {
+	userId := req.URL.Query().Get("userId")
+	url := "http://" + apiHost + "/api/users/" + userId + "/scalepoints"
+
+	req, err := http.NewRequest("GET", url, nil)
+	req.Header.Set("Authorization", token)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	// send the body and status code
+	rw.Header().Set("Content-Type", "application/json")
+	rw.WriteHeader(resp.StatusCode)
+	fmt.Fprintln(rw, string(body))
+}
+
+func badgeList(rw http.ResponseWriter, req *http.Request) {
+	userId := req.URL.Query().Get("userId")
+	url := "http://" + apiHost + "/api/users/" + userId + "/badges"
+	req, err := http.NewRequest("GET", url, nil)
+	req.Header.Set("Authorization", token)
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	// send the body and status code
+	rw.Header().Set("Content-Type", "application/json")
+	rw.WriteHeader(resp.StatusCode)
+	fmt.Fprintln(rw, string(body))
+}
+
+
 func gamifyLogin() (token string) {
 	credentials := Credentials{ ApplicationName:"sound-redux",Password:"welovemusic" }
 	b := new(bytes.Buffer) // encoded json
@@ -69,6 +107,8 @@ func main() {
 	r.Handle("/", http.FileServer(http.Dir("public"))).Methods("GET")
 	r.HandleFunc("/api/events", events).Methods("POST")
 	r.HandleFunc("/api/status", status).Methods("GET")
+	r.HandleFunc("/api/me/badges", badgeList).Methods("GET")
+	r.HandleFunc("/api/me/scalepoints", scalePointList).Methods("GET")
 	r.HandleFunc("/api/callback", action(authCallback))
 	n := negroni.Classic()
 	n.UseHandler(r)

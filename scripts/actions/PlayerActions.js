@@ -65,12 +65,17 @@ export function playSong(playlist, songIndex) {
     dispatch(changePlayingSong(songIndex));
 
     /**
-     * SEND START_PLAY_SONG to Gamify
+     * SEND START_LISTEN_SONG to Gamify
      */
     const songId = playlists[playlist].items[songIndex]
     const { genre, title, user_id } = entities.songs[songId]
     const { username: artist } = entities.users[user_id]
-    dispatch(postEvent(EventTypes.START_PLAY_SONG, { genre, title, artist }))
+    dispatch(postEvent(EventTypes.START_LISTEN_SONG, {
+      genre,
+      playlist,
+      artist,
+      title,
+    }))
   };
 }
 

@@ -39,6 +39,11 @@ class Nav extends Component {
     dispatch(loginUser());
   }
 
+  goToProfile(e) {
+    e.preventDefault();
+    const { dispatch } = this.props
+
+  }
   logout(e) {
     e.preventDefault();
     const { dispatch } = this.props;
@@ -58,7 +63,7 @@ class Nav extends Component {
   }
 
   renderNavUser() {
-    const { authed } = this.props;
+    const { authed, dispatch } = this.props;
 
     if (authed.user) {
       return (
@@ -74,6 +79,11 @@ class Nav extends Component {
           </div>
           <div className="nav-user-popover popover-content">
             <ul className="nav-user-popover-list">
+              <li className="nav-user-popover-item">
+                <Link dispatch={dispatch} route={{ path: ['profile'] }}>
+                  Profile
+                </Link>
+              </li>
               <li className="nav-user-popover-item">
                 <a href="#" onClick={this.logout}>Log Out</a>
               </li>
